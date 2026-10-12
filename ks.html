@@ -11,10 +11,10 @@
     }
   </style>
 </head>
-<body class="bg-slate-700 min-h-screen flex flex-col justify-center items-center">
+<body class="bg-slate-800 min-h-screen flex flex-col justify-center items-center text-slate-100">
 
   <!-- ================= LAYAR LOGIN ================= -->
-  <div id="loginScreen" class="w-full max-w-md p-6 sm:p-8 bg-white rounded-3xl shadow-2xl mx-4 my-8">
+  <div id="loginScreen" class="w-full max-w-md p-6 sm:p-8 bg-white rounded-3xl shadow-2xl mx-4 my-8 text-slate-900">
     <!-- Logo -->
     <div class="flex justify-center mb-4">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRESVnGGzgEIkf9q6nFxX3TJ2oCPb2g8wWhobdhB6didA&s" 
@@ -59,13 +59,13 @@
   <!-- ================= DASHBOARD PORTAL (SETELAH LOGIN) ================= -->
   <div id="dashboardScreen" class="hidden w-full max-w-5xl mx-auto py-10 px-4">
     <!-- Header Dashboard -->
-    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-2xl shadow-sm mb-8 border border-slate-200 gap-4">
+    <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-2xl shadow-md mb-8 border border-slate-200 gap-4 text-slate-900">
       <div class="flex items-center gap-4">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRESVnGGzgEIkf9q6nFxX3TJ2oCPb2g8wWhobdhB6didA&s" 
              alt="Logo Sekolah" class="h-12 w-auto">
         <div>
-          <h1 class="text-2xl font-bold text-slate-800">Portal Layanan & Aplikasi</h1>
-          <p class="text-xs text-slate-500">Akses terpadu Kepala Sekolah SMPN 1 Kandat</p>
+          <h1 class="text-2xl font-bold text-slate-900">Portal Layanan & Aplikasi</h1>
+          <p class="text-xs text-slate-500 font-medium">Akses terpadu Kepala Sekolah SMPN 1 Kandat</p>
         </div>
       </div>
       <button onclick="handleLogout()" 
@@ -85,7 +85,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden" id="appGrid"></div>
 
     <!-- Footer -->
-    <div class="text-center mt-12 text-xs text-slate-300">
+    <div class="text-center mt-12 text-xs text-slate-400">
       &copy; SMP Negeri 1 Kandat. All rights reserved.
     </div>
   </div>
@@ -118,22 +118,21 @@
       sessionStorage.removeItem("isLoggedIn");
       document.getElementById("dashboardScreen").classList.add("hidden");
       document.getElementById("loginScreen").classList.remove("hidden");
-      document.body.className = "bg-slate-700 min-h-screen flex flex-col justify-center items-center";
+      document.body.className = "bg-slate-800 min-h-screen flex flex-col justify-center items-center text-slate-100";
       document.getElementById("loginForm").reset();
     }
 
     function showDashboard() {
       document.getElementById("loginScreen").classList.add("hidden");
       document.getElementById("dashboardScreen").classList.remove("hidden");
-      document.body.className = "bg-slate-700 min-h-screen py-6 px-4";
+      document.body.className = "bg-slate-800 min-h-screen py-6 px-4 text-slate-100";
       loadApps();
     }
 
-    // Pembersih kode warna (mengambil "#FEF3C7" dari "#FEF3C7 (Kuning Soft)")
     function cleanHexColor(str) {
-      if (!str) return '#FFFFFF';
+      if (!str) return '#3b82f6';
       const match = str.match(/#[0-9A-Fa-f]{6}/);
-      return match ? match[0] : '#FFFFFF';
+      return match ? match[0] : '#3b82f6';
     }
 
     async function loadApps() {
@@ -155,18 +154,20 @@
           const card = document.createElement('a');
           card.href = app.link || '#';
           card.target = '_blank';
-          card.className = 'p-6 rounded-2xl shadow-lg border border-black/5 hover:shadow-2xl transition-all transform hover:-translate-y-1 block flex flex-col justify-between';
+          // Kartu dibuat berlatar belakang PUTIH BERSIH (bg-white) agar teks hitam/slate-900 100% jelas
+          card.className = 'p-6 rounded-2xl bg-white shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 block flex flex-col justify-between border border-slate-200';
           
-          // Menggunakan warna yang sudah dibersihkan
-          card.style.backgroundColor = cleanHexColor(app.warna);
+          // Warna dari spreadsheet dipakai sebagai garis aksen atas (border-top)
+          const accentColor = cleanHexColor(app.warna);
+          card.style.borderTop = `6px solid ${accentColor}`;
 
           card.innerHTML = `
             <div>
               <div class="text-4xl mb-4">${app.emoji || '🔗'}</div>
               <h2 class="text-xl font-bold text-slate-900 mb-2">${app.nama}</h2>
-              <p class="text-sm text-slate-700 font-medium mb-2">${app.subtitle || ''}</p>
+              <p class="text-sm text-slate-600 font-medium mb-2">${app.subtitle || ''}</p>
             </div>
-            <div class="mt-6 text-xs font-bold text-slate-900 flex items-center gap-1">
+            <div class="mt-6 text-xs font-bold text-blue-600 flex items-center gap-1">
               Buka Aplikasi &rarr;
             </div>
           `;
